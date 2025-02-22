@@ -1,0 +1,116 @@
+﻿@model GestForma.Models.TrainerRegister
+
+@{
+    ViewData["Title"] = "Add Trainer";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert-primary text-center mx-auto" style="padding:0.75rem 1.25rem">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["Error"]
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-2 col-12 mr-md-n5 ml-md-3">
+            <partial name="nav" />
+        </div>
+        <div class="col-md-10 col-12 ml-md-n5">
+            <div class="col-md-10 mx-auto rounded border p-3">
+                <h2 class="text-center mb-3">Register Trainer</h2>
+                <hr />
+                <form asp-controller="Trainers" asp-action="RegisterTrainer" method="post" enctype="multipart/form-data">
+                    <!-- First Name -->
+                    <div class="row mb-3">
+                        <label asp-for="FirstName" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Last Name -->
+                    <div class="row mb-3">
+                        <label asp-for="LastName" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div class="row mb-3">
+                        <label asp-for="Email" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Password -->
+                    <div class="row mb-3">
+                        <label asp-for="Password" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Password" type="password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="row mb-3">
+                        <label asp-for="ConfirmPassword" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Phone -->
+                    <div class="row mb-3">
+                        <label asp-for="Phone" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Phone" type="tel" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Field -->
+                    <div class="row mb-3">
+                        <label asp-for="Field" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Field" class="form-control" />
+                            <span asp-validation-for="Field" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Profile Image -->
+                    <div class="row mb-3">
+                        <label asp-for="ProfileImage" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="ProfileImage" type="file" class="form-control" />
+                            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Buttons -->
+                    <div class="row mb-3">
+                        <div class="col d-grid">
+                            <button id="registerSubmit" type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                        <div class="col d-grid">
+                            <a class="btn btn-outline-primary" href="/" role="button">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

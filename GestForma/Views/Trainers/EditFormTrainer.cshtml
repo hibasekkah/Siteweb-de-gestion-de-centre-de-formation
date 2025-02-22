@@ -1,0 +1,80 @@
+﻿@model GestForma.Models.TrainerRegister
+@{
+    ViewData["Title"] = "EditFormTrainer";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+
+
+    <div class="row">
+        <div class="col-lg-6 mx-auto rounded border p-3">
+            <h2 class="text-center mb-3">Edit.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <form asp-controller="Trainers" asp-action="EditTrainer" asp-route-id=@Model.Email method ="post" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">First Name</label>
+                    <div class="col-sm-8">
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Last Name</label>
+                    <div class="col-sm-8">
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Phone</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Password</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">ConfirmPassword</label>
+                    <div class="col-sm-8">
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label asp-for="ProfileImage" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="ProfileImage" type="file" class="form-control" />
+                        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col d-grid">
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary"> Register</button>
+                    </div>
+                    <div class="col d-grid">
+                        <a class="btn btn-outline-primary" asp-action="Trainers" role="button">Cancel the edit</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+

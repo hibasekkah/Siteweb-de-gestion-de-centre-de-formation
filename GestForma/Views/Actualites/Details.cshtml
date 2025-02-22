@@ -1,0 +1,38 @@
+﻿@model GestForma.Models.Actualite
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="text-center text-dark fw-bold mt-5">Details</h1>
+
+
+
+<!-- Team Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="owl-carousel team-carousel position-relative" style="padding: 0 30px;">
+            <div class="team-item">
+                <div class="d-flex align-items-center bg-light p-3">
+                    <!-- Image Section -->
+                    <img src="/Actualites/GetImage/@Html.DisplayFor(model => model.IdActualite)"
+                         alt="@Html.DisplayFor(model => model.FileName)"
+                         style="max-width: 150px; max-height: 200px; margin-right: 20px;"
+                         class="img-fluid rounded">
+
+                    <!-- Text Section -->
+                    <div>
+                        <h5 class="mb-3">@Html.DisplayFor(model => model.Titre)</h5>
+                        <p class="mb-2">@Html.DisplayFor(model => model.Description)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.IdActualite" class="btn btn-primary mx-2">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+</div>

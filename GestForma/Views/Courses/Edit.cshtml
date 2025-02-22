@@ -1,0 +1,75 @@
+﻿@model GestForma.Models.Formation
+
+@{
+    ViewData["Title"] = "Edit Course";
+    Layout = "~/Views/Shared/_LayoutFormateur.cshtml";
+}
+
+<h1 class="text-center text-dark fw-bold mt-5">Edit Course</h1>
+<hr />
+<div class="row mx-auto">
+    <div class="col-md-4 mx-auto">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Hidden Field for ID -->
+            <input type="hidden" asp-for="ID_Formation" />
+
+            <!-- Intitule -->
+            <div class="form-group">
+                <label asp-for="Intitule" class="control-label"></label>
+                <input asp-for="Intitule" class="form-control" placeholder="Enter the course title" />
+                <span asp-validation-for="Intitule" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" placeholder="Write a description for the course"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+                <label asp-for="Id_Categorie" class="control-label"></label>
+                <select asp-for="Id_Categorie" class="form-control" asp-items="ViewBag.Id_Categorie">
+                    <option value="">Select a category</option>
+                </select>
+                <span asp-validation-for="Id_Categorie" class="text-danger"></span>
+            </div>
+
+            <!-- Duration -->
+            <div class="form-group">
+                <label asp-for="Duree" class="control-label"></label>
+                <input asp-for="Duree" class="form-control" placeholder="Enter the course duration (e.g., 3 hours)" />
+                <span asp-validation-for="Duree" class="text-danger"></span>
+            </div>
+
+            <!-- Cost -->
+            <div class="form-group">
+                <label asp-for="Cout" class="control-label"></label>
+                <input asp-for="Cout" class="form-control" placeholder="Enter the cost of the course (e.g., 50.00)" />
+                <span asp-validation-for="Cout" class="text-danger"></span>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="form-group">
+                <label for="file">Image :</label>
+                <input type="file" id="file" name="file" class="form-control" />
+            </div>
+
+            <!-- Buttons -->
+            <div class="row mb-3">
+                <!-- Save Button -->
+                <div class="col d-grid">
+                    <input type="submit" value="Save" class="w-100 btn btn-lg btn-primary" />
+                </div>
+
+                <!-- Back to List Button -->
+                <div class="col d-grid">
+                    <a asp-action="Index" class="btn btn-outline-primary w-100">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

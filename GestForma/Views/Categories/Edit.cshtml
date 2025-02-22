@@ -1,0 +1,39 @@
+﻿@model GestForma.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div class="row mx-auto">
+    <div class="col-md-4 mx-auto">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+           
+
+            <div class="row mb-3">
+
+                <div class="col d-grid">
+                    <input type="submit" value="Save" class="w-100 btn btn-lg btn-primary " />
+                </div>
+
+                <div class="col d-grid">
+                    <button class="w-100 btn btn-outline-primary">
+                        <a asp-action="Index">Back to List</a>
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+

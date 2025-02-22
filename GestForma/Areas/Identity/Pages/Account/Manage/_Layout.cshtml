@@ -1,0 +1,72 @@
+﻿@{
+    if (User.Identity.IsAuthenticated)
+    {
+
+        if (User.IsInRole("professeur"))
+        {
+            Layout = "~/Views/Shared/_LayoutFormateur.cshtml";
+        }
+        else if (User.IsInRole("administrateur"))
+        {
+            Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+<style>
+    h1 {
+        text-align: center; /* Centre le texte horizontalement */
+    }
+</style>
+<style>
+    .container1 {
+        background-color: #DEF0FF; /* Fond bleu clair */
+        display: flex; /* Active Flexbox */
+        justify-content: center; /* Centre horizontalement */
+        align-items: center; /* Centre verticalement */
+        height: 100px; /* Hauteur du conteneur */
+        color: #000; /* Texte noir pour un bon contraste */
+        border-radius: 0; /* Supprime les coins arrondis (si non nécessaire) */
+        margin: 0; /* Supprime les marges autour */
+        width: 100%; /* Largeur totale */
+        text-align: center; /* Centre le texte */
+    }
+</style>
+
+<h1>Manage Your Account</h1>
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="section-title text-center position-relative mb-5">
+            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Profile</h6>
+
+        </div>
+        <div class="container1">
+            <h2>Change Your Account Settings</h2>
+        </div>
+        <div>
+            <hr />
+            <div class="row">
+                <div class="col-md-3">
+                    <partial name="_ManageNav" />
+                </div>
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

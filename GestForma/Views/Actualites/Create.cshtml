@@ -1,0 +1,48 @@
+﻿@model GestForma.Models.Actualite
+
+@{
+    ViewData["Title"] = "Create News";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="text-center text-dark fw-bold mt-5">Create News</h1>
+<hr />
+<div class="row mx-auto">
+    <div class="col-md-4 mx-auto">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Champ Titre -->
+            <div class="form-group">
+                <label asp-for="Titre" class="control-label"></label>
+                <input asp-for="Titre" class="form-control" placeholder="Enter the title of the news" />
+                <span asp-validation-for="Titre" class="text-danger"></span>
+            </div>
+
+            <!-- Champ Description -->
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" placeholder="Write the news description here"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Champ Image -->
+            <div class="form-group">
+                <label for="file">Image</label>
+                <input type="file" id="file" name="file" class="form-control" />
+            </div>
+
+            <!-- Bouton Create -->
+            <div class="row mb-3">
+                <div class="col d-grid">
+                    <input type="submit" value="Create" class="w-100 btn btn-lg btn-info" />
+                </div>
+            </div>
+        </form>
+
+        <!-- Bouton Back to List -->
+        <div class="col d-grid">
+            <a asp-action="Index" class="btn btn-info text-light w-100">Back to List</a>
+        </div>
+    </div>
+</div>

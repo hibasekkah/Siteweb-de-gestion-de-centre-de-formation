@@ -1,0 +1,320 @@
+﻿@{
+    ViewData["Title"] = "Statistic";
+    Layout = "~/Views/Shared/_LayoutFormateur.cshtml";
+    var inscriptionsByFormation = ViewBag.inscriptionsByFormation as List<GestForma.Models.FormaInscriVM>;
+}
+
+<div class="container py-5">
+    <div style="padding: 0 10px;">
+
+        <div class="container1">
+            <h2>Global Statistics</h2>
+        </div>
+
+    </div>
+</div>
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-auto mr-5">
+            <div class="row">
+                <div class="card card1 mb-3">
+                    <div class="card-body">
+                        <div class="card2">
+
+                            <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                            <h5 class="card-title title1">Registrations Number</h5>
+                        </div>
+                        <p class="card-text text1">@(@ViewBag.nbrInscriTotal ?? 0)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card card1 mb-3">
+                    <div class="card-body">
+                        <div class="card2">
+
+                            <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                            <h5 class="card-title title1">Certified Participants</h5>
+                        </div>
+                        <p class="card-text text1">@(@ViewBag.nbrInscriTotalCerti ?? 0)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <h2>Registration by Courses</h2>
+            @if (ViewBag.inscriptionsByFormation != null && ViewBag.inscriptionsByFormation.Count > 0)
+            {
+                <canvas id="regisCourseChart" style="max-width: 500px; max-height: 300px; margin: auto;"></canvas>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    var ctx = document.getElementById('regisCourseChart').getContext('2d');
+                    var registCourses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.inscriptionsByFormation));
+                    var labels = registCourses.map(function(group) { return group.FormationName; });
+                    var data = registCourses.map(function(group) { return group.Count; });
+
+                    var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                    labels: labels,
+                    datasets: [{
+                    label: 'Registrations per course',
+                    data: data,
+                    backgroundColor: ['#0073FF', '#00C7FF', '#00FFE9', '#acdcee', '#f0fbff', '#05004e'],
+                    hoverBackgroundColor: ['#0073FF', '#00C7FF', '#00FFE9', '#acdcee', '#f0fbff', '#05004e']
+                    }]
+                    },
+                    options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Permet de désactiver le ratio par défaut
+                    plugins: {
+                    legend: {
+                    position: 'top',
+                    },
+                    tooltip: {
+                    callbacks: {
+                    label: function(tooltipItem) {
+                    return tooltipItem.label + ': ' + tooltipItem.raw + ' participants';
+                    }
+                    }
+                    }
+                    },
+                    layout: {
+                    padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                    }
+                    },
+                    scales: {
+                    x: {
+                    display: false
+                    },
+                    y: {
+                    display: false
+                    }
+                    }
+                    }
+                    });
+                </script>
+            }
+            else{
+                <div class="alert alert-warning">No recods found.</div>
+            }
+        </div>
+
+        <div class="col-auto">
+            <h2>Registered Participants</h2>
+
+            @if (ViewBag.ageGroups != null && ViewBag.ageGroups.Count > 0)
+            {
+                <canvas id="ageDistributionChart" style="max-width: 500px; max-height: 300px; margin: auto;"></canvas>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    var ctx = document.getElementById('ageDistributionChart').getContext('2d');
+                    var ageGroups = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ageGroups));
+                    var labels = ageGroups.map(function(group) { return group.AgeGroup; });
+                    var data = ageGroups.map(function(group) { return group.Count; });
+
+                    var chart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Age distribution',
+                                data: data,
+                                backgroundColor: ['#FF0000', '#FF4500', '#DC143C', '#B22222', '#8B0000', '#FFA07A'],
+                                hoverBackgroundColor: ['#FF0000', '#FF4500', '#DC143C', '#B22222', '#8B0000', '#FFA07A']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // Permet de désactiver le ratio par défaut
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(tooltipItem) {
+                                            return tooltipItem.label + ': ' + tooltipItem.raw + ' participants';
+                                        }
+                                    }
+                                }
+                            },
+                            layout: {
+                                padding: {
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    bottom: 0
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    display: false
+                                },
+                                y: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                </script>
+            }
+            else
+            {
+                <div class="alert alert-warning">No recods found.</div>
+            }
+        </div>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="d-flex justify-content-center align-items-center mt-3 bg-primary p-4">
+    <div class="mb-3 w-25 h2">
+        <input type="text" id="searchformation" class="form-control" placeholder="Search by Course name" style="font-size:1.3rem"/>
+    </div>
+</div>
+<div class="formations">
+@foreach (var element in ViewBag.formationsStatistics){
+        <div id="@element.formationName" class="formation-item">
+    <div class="container py-5">
+        <div style="padding: 0 10px;">
+
+            <div class="container1">
+                <h2>@element.formationName</h2>
+            </div>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-auto mr-5">
+                <div class="row">
+                    <div class="card card1 mb-3">
+                        <div class="card-body">
+                            <div class="card2">
+
+                                <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                                <h5 class="card-title title1">Registrations Number</h5>
+                            </div>
+                            <p class="card-text text1">@(element.nbrInscriTotal ?? 0)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card card1 mb-3">
+                        <div class="card-body">
+                            <div class="card2">
+
+                                <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                                <h5 class="card-title title1">Certified Participants</h5>
+                            </div>
+                            <p class="card-text text1">@(element.nbrInscriTotalCerti ?? 0)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="col-auto">
+                <h2>Registered Participants</h2>
+
+                @if (element.ageGroups != null && element.ageGroups.Count > 0)
+                {
+                    <canvas id="ageDistributionChart_@element.formationName" style="max-width: 500px; max-height: 300px; margin: auto;"></canvas>
+
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        var ctx = document.getElementById('ageDistributionChart_@element.formationName').getContext('2d');
+                        var ageGroups = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(@element.ageGroups));
+                        var labels = ageGroups.map(function(group) { return group.AgeGroup; });
+                        var data = ageGroups.map(function(group) { return group.Count; });
+
+                        var chart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Age distribution',
+                                    data: data,
+                                    backgroundColor: ['#FF0000', '#FF4500', '#DC143C', '#B22222', '#8B0000', '#FFA07A'],
+                                    hoverBackgroundColor: ['#FF0000', '#FF4500', '#DC143C', '#B22222', '#8B0000', '#FFA07A']
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false, // Permet de désactiver le ratio par défaut
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(tooltipItem) {
+                                                return tooltipItem.label + ': ' + tooltipItem.raw + ' participants';
+                                            }
+                                        }
+                                    }
+                                },
+                                layout: {
+                                    padding: {
+                                        left: 0,
+                                        right: 0,
+                                        top: 0,
+                                        bottom: 0
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        display: false
+                                    },
+                                    y: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                }
+                else
+                {
+                    <div class="alert alert-warning">No recods found.</div>
+                }
+            </div>
+        </div>
+    </div>
+    </div>
+}
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+           $(document).ready(function () {
+        $("#searchformation").on("keyup", function () {
+            var searchValue = $(this).val().toLowerCase();  // Get the search value and convert to lowercase
+
+            // Loop through each div with class 'formation-item'
+            $(".formation-item").each(function () {
+                var formationId = $(this).attr("id").toLowerCase();  // Get the 'id' attribute of the item
+
+                // Toggle visibility based on whether the formation item's id contains the search term
+                if (formationId.indexOf(searchValue) !== -1 && searchValue.trim() !== "") {
+                    $(this).show();  // Show the item if the id matches the search term
+                } else {
+                    $(this).hide();  // Hide the item if the id does not match or if searchValue is empty
+                }
+            });
+        });
+
+        // Optionally, hide all items initially if there's no search term on page load
+        if ($("#searchformation").val().trim() === "") {
+            $(".formation-item").hide();  // Hide all items initially if the search box is empty on load
+        }
+    });
+
+
+
+</script>

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="~/css/trainers.css">
+</head>
+<body>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3 text-center">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3 text-center">@TempData["Error"]</div>
+}
+<div class="jumbotron jumbotron-fluid page-header position-relative overlay-bottom" style="margin-bottom: 20px;">
+    <div class="container text-center py-5">
+        <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
+            <form method="get" action="@Url.Action("Courses")" class="d-flex justify-content-center align-items-center">
+                <!-- Dropdown for Search By -->
+                <div class="mr-3 d-flex align-items-center">
+                    <label for="searchBy" class="font-weight-bold mr-2 mb-0 text-light">Search By:</label>
+                    <select name="searchBy" id="searchBy" class="form-control"
+                            style="height: 50px; border-radius: 5px;">
+                        <option value="categorie">Category</option>
+                        <option value="prix">Price</option>
+                        <option value="titre">Course Title</option>
+                        <option value="nombreHeure">Number of hours</option>
+                    </select>
+                </div>
+
+                <!-- Input Field for Keyword -->
+                <div class="mr-3 d-flex align-items-center">
+                    <input type="text" name="keyword" id="keyword" class="form-control"
+                           style="height: 50px; border-radius: 5px; padding: 0 15px;"
+                           placeholder="Keyword" />
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex align-items-center">
+                    <button type="submit" class="btn btn-secondary"
+                            style="height: 50px; border-radius: 5px; padding: 0 20px;">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row mx-0 justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-title text-center position-relative mb-5">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Our Courses</h6>
+                    <h1 class="display-4">Checkout New Releases Of Our Courses</h1>
+                </div>
+            </div>
+
+
+
+            <div class="row" id="coursesList">
+                @foreach (var formation in Model)
+                {
+                    <div class="col-lg-4 col-md-6 pb-4 course-item"
+                         data-category="@formation.CategorieTitle"
+                         data-title="@formation.Intitule.ToLower()">
+                        <div class="courses-list-item position-relative d-block overflow-hidden team-item">
+                            <img class="img-fluid" src="@("data:image;base64," + (formation.Data != null ? Convert.ToBase64String(formation.Data) : "default_image_base64"))" alt="@formation.Intitule" />
+                            <div class="courses-text">
+                                <h4 class="text-center text-white px-3">@formation.Intitule</h4>
+                                <div class="border-top w-100 mt-3">
+                                    <div class="d-flex justify-content-between p-4">
+                                        <span class="text-white"><i class="fa fa-user mr-2"></i> @formation.FormateurName</span>
+                                        <span class="text-white"><i class="fa fa-star mr-2"></i> @(formation.AverageRate.ToString("F1")) </span>
+                                        <span><h5 class="card-title">@formation.Cout Dh</h5></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("participant"))
+                        {
+                            <div class="w-100 bg-white text-center p-4 mb-2 mt-n1">
+                                <form asp-controller="Inscriptions" asp-action="CourseRegister" method="post" class="w-100">
+                                    <!-- Hidden inputs to pass data -->
+                                    <input type="hidden" name="CourseId" value="@formation.ID_Formation" />
+                                    <input type="hidden" name="ParticipantId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                                    <button class="btn btn-primary w-75">Registration</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.getElementById('searchButton').addEventListener('click', function () {
+        const category = document.getElementById('categorySelect').value.toLowerCase();
+        const keyword = document.getElementById('keywordInput').value.toLowerCase();
+        const courses = document.querySelectorAll('.course-item');
+
+        courses.forEach(function (course) {
+            const courseCategory = course.getAttribute('data-category').toLowerCase();
+            const courseTitle = course.getAttribute('data-title').toLowerCase();
+
+            const categoryMatches = category ? courseCategory === category : true;
+            const keywordMatches = keyword ? courseTitle.includes(keyword) : true;
+
+            course.style.display = (categoryMatches && keywordMatches) ? 'block' : 'none';
+        });
+    });
+</script>
+</body>
+</html>
+
+

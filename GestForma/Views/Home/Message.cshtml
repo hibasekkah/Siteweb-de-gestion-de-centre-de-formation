@@ -1,0 +1,74 @@
+﻿@model List<GestForma.Models.Message>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger text-center">
+        @TempData["ErrorMessage"]
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<h2 class="text-center text-dark fw-bold mt-5 mb-4">Messages sent by the web site's guests</h2>
+<!-- Search Bar -->
+<div class="d-flex justify-content-center align-items-center">
+    <div class="mb-3 w-25">
+        <input type="text" id="searchSubject" class="form-control" placeholder="Search by Subject" />
+    </div>
+</div>
+
+<div class="table-responsive mx-auto px-4 mt-5" style="margin-bottom:200px">
+    <table class="table table-bordered table-hover table-striped text-center" id="tableCertificats">
+        <thead>
+            <tr>
+                <th>Sender Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.Name != null ? item.Name : "No Name Available")</td>
+                        <td class="email">@((item.Email != null && item.Email.Length > 0) ? item.Email : "No Email Available")</td>
+                        <td class="subject">@((item.Subject != null && item.Subject.Length > 0) ? item.Subject : "No Subject Available")</td>
+                        <td>@(item.Body != null ? item.Body : "No Message Available")</td>
+                        <td>
+                            <!-- Bouton pour supprimer le message -->
+                            <form action="@Url.Action("DeleteMessage", "Home", new { id = item.Id })" method="post" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Recherche par Subject
+    $("#searchSubject").on("keyup", function () {
+        var searchValue = $(this).val().toLowerCase();
+        $("#tableCertificats tbody tr").filter(function () {
+            $(this).toggle($(this).find(".subject").text().toLowerCase().indexOf(searchValue) > -1);
+        });
+    });
+</script>

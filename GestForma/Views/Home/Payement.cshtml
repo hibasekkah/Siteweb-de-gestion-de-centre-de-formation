@@ -1,0 +1,86 @@
+﻿@model List<GestForma.Models.Inscription>
+@{
+    ViewData["Title"] = "Payement";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-primary text-center mx-auto">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["Error"]
+        </div>
+    }
+    <h2 class="text-center text-dark fw-bold mt-5 mb-4">Registrations require payment to be settled.</h2>
+    <div class="row" style="margin-bottom:200px">
+        
+        <div class="col-md-10 col-12 table-responsive mx-auto px-4">
+            <!-- Search Bar -->
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="mb-3 w-25">
+                    <input type="text" id="searchEmail" class="form-control" placeholder="Search by Email" />
+                </div>
+            </div>
+
+            <!-- Add ID to the table -->
+            <table id="paidTable" class="table table-bordered table-hover table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>Participant email</th>
+                        <th>Course name</th>
+                        <th>Course cost</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var inscription in Model)
+                    {
+                        <tr>
+                            <td class="email">@(inscription.User != null ? inscription.User.Email : "No Email Available")</td>
+                            <td>@(inscription.Formation != null ? inscription.Formation.Intitule : "No Course Name")</td>
+                            <td>@(inscription.Formation != null ? inscription.Formation.Cout.ToString("C") : "0 $")</td>
+
+                            <td>
+                                <form asp-controller="Inscriptions" asp-action="CoursePaid" asp-route-id="@inscription.ID_Inscription" method="post">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        &nbsp;&nbsp;Paid &nbsp;&nbsp
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Count == 0)
+                    {
+                        <tr><td colspan="4" class="text-center">No records found.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#searchEmail").on("keyup", function () {
+                var searchValue = $(this).val().toLowerCase();
+                $("#paidTable tbody tr").filter(function () {
+                    $(this).toggle($(this).find(".email").text().toLowerCase().indexOf(searchValue) > -1);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

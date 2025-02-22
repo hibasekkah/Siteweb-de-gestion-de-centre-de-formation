@@ -1,0 +1,18 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<a asp-controller="Trainers" asp-action="AddTrainer"
+   class="dropdown-item text-center mb-2 @(ViewContext.RouteData.Values["action"]?.ToString() == "AddTrainer" ? "active" : "")"
+   style="border: 1px solid gray; padding: 5px; border-radius: 5px;">
+    Add a Trainer
+</a>
+<a asp-controller="Trainers" asp-action="DeleteFormTrainer"
+   class="dropdown-item text-center mb-2 @(ViewContext.RouteData.Values["action"]?.ToString() == "DeleteFormTrainer" ? "active" : "")"
+   style="border: 1px solid gray; padding: 5px; border-radius: 5px;">
+    Delete a Trainer
+</a>
+
+
+

@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model List<GestForma.Models.Trainer>
+
+<h2>Trainers</h2>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var trainer in Model)
+        {
+            <li>
+                <img src="@Url.Action("GetImage", "Trainers", new { id = trainer.Id })" alt="@trainer.FileName" />
+                <p>@trainer.FileName</p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No trainers available.</p>
+}

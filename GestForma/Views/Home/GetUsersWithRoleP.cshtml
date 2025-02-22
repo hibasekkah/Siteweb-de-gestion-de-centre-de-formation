@@ -1,0 +1,84 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model List<ApplicationUser>
+
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    Layout = ViewData["LayoutAdmin"]?.ToString() ?? "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "GetUsersWithRoleP";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-primary text-center mx-auto">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center">
+        @TempData["Error"]
+    </div>
+}
+<h2 class="text-center text-dark fw-bold mt-5 mb-4">Participants</h2>
+<!-- Search Bar -->
+<div class="d-flex justify-content-center align-items-center">
+    <div class="mb-3 w-25">
+        <input type="text" id="searchEmail" class="form-control" placeholder="Search by Email" />
+    </div>
+</div>
+
+<div class="table-responsive mx-auto px-4 mt-5" style="margin-bottom:200px">
+    <table class="table table-bordered  table-hover table-striped text-center" id="tableParticipant">
+        <thead>
+            <tr>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any()){
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.LastName</td>
+                        <td class="email">@user.Email</td>
+                        <td>@user.CreatedAt.ToString("d")</td>
+                        <td>
+
+                            <form asp-action="DeleteParticipant" asp-route-id="@user.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this participant? ?');">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-person-fill-dash"></i> Delete
+                                </button>
+                            </form>
+
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">No records found.</td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#searchEmail").on("keyup", function () {
+            var searchValue = $(this).val().toLowerCase();
+            $("#tableParticipant tbody tr").filter(function () {
+                $(this).toggle($(this).find(".email").text().toLowerCase().indexOf(searchValue) > -1);
+            });
+        });
+    });
+</script>
+

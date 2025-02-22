@@ -1,0 +1,88 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewBag.Title = "Répartition des participants par âge";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+<div class="card card1 mb-3">
+    <div class="card-body">
+        <div class="card2">
+
+            <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+            <h5 class="card-title title1">Participants Number</h5>
+        </div>
+        <p class="card-text text1">@ViewBag.UserCount</p>
+    </div>
+</div>
+</div>
+
+<div class="col-auto">
+<h2>Age Distribution of Participants</h2>
+
+@if (Model.Any())
+{
+    <canvas id="ageDistributionChart" style="max-width: 500px; max-height: 300px; margin: auto;"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('ageDistributionChart').getContext('2d');
+        var ageGroups = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        var labels = ageGroups.map(function(group) { return group.AgeGroup; });
+        var data = ageGroups.map(function(group) { return group.Count; });
+
+        var chart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Répartition par âge',
+                    data: data,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#F7464A', '#46BFBD'],
+                    hoverBackgroundColor: ['#FF4C6B', '#4C8BF0', '#FFB83E', '#4CD7D3', '#FF5D70', '#47D0C6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Permet de désactiver le ratio par défaut
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' utilisateurs';
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+}
+else
+{
+    <div class="alert alert-warning">Aucun participant trouvé pour ce rôle.</div>
+}
+</div>
+  </div>
+</div>

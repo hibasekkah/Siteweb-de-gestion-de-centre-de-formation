@@ -1,0 +1,72 @@
+﻿@{
+    var commentaires = ViewBag.latestCommentaires as List<GestForma.Models.CommentairesEntiers>;
+}
+<!-- Header Start -->
+<div class="jumbotron jumbotron-fluid page-header position-relative overlay-bottom" style="margin-bottom: 20px;">
+    <div class="container text-center py-4">
+        <h1 class="text-white display-1">Testimonial</h1>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Header End -->
+<!-- Testimonial Start -->
+<div class="container-fluid bg-image py-5" style="margin: 90px 0;">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-5 mb-lg-0">
+                <div class="section-title position-relative mb-4">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Testimonial</h6>
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success mt-3 text-center">@TempData["Success"]</div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger mt-3 text-center">@TempData["Error"]</div>
+                    }
+                    <h1 class="display-4">What Say Our Students</h1>
+                </div>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("participant"))
+                {
+                    <!-- Bouton pour afficher le formulaire de commentaire -->
+                    <button class="btn btn-primary mt-3" id="commentButton" onclick="toggleCommentForm()">Leave a Comment</button>
+
+                    <!-- Formulaire de commentaire (masqué par défaut) -->
+                    <div id="commentForm" class="mt-4" style="display: none;">
+                        <form asp-controller="Home" asp-action="AjouterCommentaireT" method="post">
+                            <div class="form-group">
+                                <label for="comment">Your Comment:</label>
+                                <textarea class="form-control" id="comment" name="ContenuCommentaire" rows="4" placeholder="Enter your comment here..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Submit Comment</button>
+                        </form>
+                    </div>
+                    <script>
+                        // Fonction JavaScript pour afficher/masquer le formulaire de commentaire
+                        function toggleCommentForm() {
+                        const form = document.getElementById('commentForm');
+                        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                        }
+                    </script>
+
+                }
+            </div><div class="col-lg-7">
+                <div class="owl-carousel testimonial-carousel">
+                    @foreach (var commentaire in commentaires) 
+                     { 
+                         <div class="bg-white p-5"> 
+                            <i class="fa fa-3x fa-quote-left text-primary mb-4"></i> 
+                             <p>@commentaire.ContenuCommentaire</p> 
+                             <div class="d-flex flex-shrink-0 align-items-center mt-4"> 
+                                 <div> 
+                                     <h5>@commentaire.User.FirstName @commentaire.User.LastName</h5> 
+                                 </div> 
+                             </div> 
+                        </div> 
+                     } 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Testimonial end -->

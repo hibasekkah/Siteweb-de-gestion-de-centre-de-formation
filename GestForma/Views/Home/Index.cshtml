@@ -1,0 +1,394 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    var formations = ViewBag.Formations1 as List<GestForma.Models.Formation>;
+    var trainers = ViewBag.Trainers;
+    var actualites = ViewBag.Actualites as List<GestForma.Models.Actualite>;
+    var commentaires = ViewBag.Commentaires as List<GestForma.Models.CommentairesEntiers>;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="~/css/trainers.css">
+</head>
+<body>
+    <!-- Affichage des messages de confirmation/erreur -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mt-3 text-center">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mt-3 text-center">@TempData["Error"]</div>
+    }
+    <!-- Confirmation of sending the message from contact-->
+    @if (TempData["ConfirmationMessage"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["ConfirmationMessage"]
+        </div>
+    }
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid position-relative overlay-bottom" style="margin-bottom: 90px;">
+        <div class="container text-center my-5 py-5">
+            <h2 class="display-3 text-white animated slideInDown">Get Educated Online or On-Site From Your Home or Office</h2>
+            <p class="fs-5 text-white mb-4 pb-2">Explore professional courses in diverse fields like Development, Marketing, and Management. Designed by industry experts, our training programs combine flexibility and quality to help you achieve your goals.</p>
+
+            <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
+
+
+                <a asp-controller="Courses" asp-action="Courses" class="btn btn-secondary px-4 px-lg-5" style="padding: 30px 25px;">Search Courses</a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Header End -->
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-5 mb-5 mb-lg-0" style="min-height: 500px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="../img/About.jpg" style="object-fit: cover">
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="section-title position-relative mb-4">
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">About Us</h6>
+                        <h1 class="display-4">Welcome to PowerLearn</h1>
+                    </div>
+                    <p>At PowerLearn, we are dedicated to providing high-quality training in various fields, including Development, Marketing, and Management. Our mission is to empower individuals through expert-led courses that equip them with the skills needed to succeed in today’s fast-paced world.</p>
+                    <p>We offer both online and on-site courses designed for learners of all levels, from beginners to professionals. Whether you prefer the flexibility of online learning or the hands-on experience of on-site training, PowerLearn provides the tools and support to help you achieve your goals.</p>
+                    <div class="row pt-3 mx-0">
+                        <div class="col-3 px-0">
+                            <div class="bg-success text-center p-4">
+                                <h1 class="text-white" data-toggle="counter-up">@ViewBag.nbrcat</h1>
+                                <h6 class="text-uppercase text-white">Available<span class="d-block">Subjects</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-3 px-0">
+                            <div class="bg-primary text-center p-4">
+                                <h1 class="text-white" data-toggle="counter-up">@ViewBag.nbrform</h1>
+                                <h6 class="text-uppercase text-white">Available<span class="d-block">Courses</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-3 px-0">
+                            <div class="bg-secondary text-center p-4">
+                                <h1 class="text-white" data-toggle="counter-up">@ViewBag.nbrprof</h1>
+                                <h6 class="text-uppercase text-white">Skilled<span class="d-block">Instructors</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-3 px-0">
+                            <div class="bg-warning text-center p-4">
+                                <h1 class="text-white" data-toggle="counter-up">@ViewBag.nbrPart</h1>
+                                <h6 class="text-uppercase text-white">Happy<span class="d-block">Students</span></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+    <!-- Feature Start -->
+    <div class="container-fluid bg-image" style="margin: 90px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 my-5 pt-5 pb-lg-5">
+                    <div class="section-title position-relative mb-4">
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Why Choose Us?</h6>
+                        <h1 class="display-4">Why You Should Start Learning with Us?</h1>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <div class="btn-icon bg-primary mr-4">
+                            <i class="fa fa-2x fa-graduation-cap text-white"></i>
+                        </div>
+                        <div class="mt-n1">
+                            <h4>Skilled Instructors</h4>
+                            <p>Our courses are taught by industry experts who bring real-world experience and insights.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <div class="btn-icon bg-secondary mr-4">
+                            <i class="fa fa-2x fa-certificate text-white"></i>
+                        </div>
+                        <div class="mt-n1">
+                            <h4>International Certificate</h4>
+                            <p>Receive globally recognized certificates that validate your skills and enhance your career prospects.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="btn-icon bg-warning mr-4">
+                            <i class="fa fa-2x fa-book-reader text-white"></i>
+                        </div>
+                        <div class="mt-n1">
+                            <h4>Flexible Learning</h4>
+                            <p class="m-0">Online courses offer flexibility and convenience, while on-site sessions provide interactive, in-person learning experiences.</p>
+                        </div>
+                    </div>
+                    <p class="mb-4 pb-2 mt-3">With a focus on quality, flexibility, and accessibility, PowerLearn is your partner in lifelong learning. Join us today, whether online or on-site, and start transforming your career.</p>
+                </div>
+                <div class="col-lg-5" style="min-height: 500px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="../img/feature.jpg" style="object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Feature Start -->
+
+    <div class="container-fluid px-0 py-5">
+        <div class="row mx-0 justify-content-center pt-5">
+            <div class="col-lg-6">
+                <div class="section-title text-center position-relative mb-4">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Our Courses</h6>
+                    <h1 class="display-4">Checkout New Releases Of Our Courses</h1>
+                </div>
+            </div>
+        </div>
+        <div class="owl-carousel courses-carousel">
+            @foreach (var formation in Model)
+            {
+                <div class="courses-item position-relative">
+                    <img class="img-fluid"
+                         src="@(formation.Data != null && formation.Data.Length > 0
+                          ? $"data:{formation.ContentType};base64,{Convert.ToBase64String(formation.Data)}"
+                          : "/img/courses-1.jpg")"
+                         alt="@formation.Intitule ?? " Default Title"" />
+
+                    <div class="courses-text">
+                        <h4 class="text-center text-white px-3">@formation.Intitule </h4>
+                        <div class="border-top w-100 mt-3">
+                            <div class="d-flex justify-content-between p-4">
+                                <span class="text-white"><i class="fa fa-user mr-2"></i>@formation.FormateurName </span>
+                                <span class="text-white"><i class="fa fa-star mr-2"></i>@(formation.AverageRate > 0 ? formation.AverageRate.ToString("F1") : "0")</span>
+                            </div>
+                        </div>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("participant"))
+                        {
+                            <div class="w-100 bg-white text-center p-4">
+                                <form asp-controller="Inscriptions" asp-action="CourseRegistration" method="post">
+                                    <input type="hidden" name="CourseId" value="@formation.ID_Formation" />
+                                    <input type="hidden" name="ParticipantId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                                    <button class="btn btn-primary">Registration</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+
+
+    </div>
+    <!-- Courses End -->
+    <!-- Courses Start -->
+    <!-- Courses End -->
+    <!-- Team Start -->
+
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="section-title text-center position-relative mb-5">
+                <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Instructors</h6>
+                <h1 class="display-4">Meet Our Instructors</h1>
+            </div>
+            <div class="owl-carousel team-carousel position-relative" style="padding: 0 30px;">
+                @if (trainers != null)
+                {
+                    @foreach (var trainer in trainers)
+                    {
+                        <div class="team-item">
+
+
+                            <img class="img-fluid"
+                                 src="data:@trainer.ContentType;base64,@Convert.ToBase64String(trainer.Data)" />
+                            <div class="bg-light text-center p-4">
+                                <h5 class="mb-3">@trainer.FirstName @trainer.LastName</h5>
+                                <p class="mb-2">@trainer.Field</p>
+                                <div class="d-flex justify-content-center">
+                                    <a class="mx-1 p-1" href="#"><i class="fab fa-twitter"></i></a>
+                                    <a class="mx-1 p-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="mx-1 p-1" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a class="mx-1 p-1" href="#"><i class="fab fa-instagram"></i></a>
+                                    <a class="mx-1 p-1" href="#"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Aucun formateur trouvé.</p>
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Team End -->
+    <!-- Testimonial Start -->
+    <div class="container-fluid bg-image py-5" style="margin: 90px 0;">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <div class="section-title position-relative mb-4">
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Testimonial</h6>
+                        <h1 class="display-4">What Say Our Students</h1>
+                    </div>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("participant"))
+                    {
+                        <!-- Bouton pour afficher le formulaire de commentaire -->
+                        <button class="btn btn-primary mt-3" id="commentButton" onclick="toggleCommentForm()">Leave a Comment</button>
+
+                        <!-- Formulaire de commentaire (masqué par défaut) -->
+                        <div id="commentForm" class="mt-4" style="display: none;">
+                            <form asp-controller="Home" asp-action="AjouterCommentaire" method="post">
+                                <div class="form-group">
+                                    <label for="comment">Your Comment:</label>
+                                    <textarea class="form-control" id="comment" name="ContenuCommentaire" rows="4" placeholder="Enter your comment here..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success">Submit Comment</button>
+                            </form>
+                        </div>
+
+
+
+                        <script>
+                            // Fonction JavaScript pour afficher/masquer le formulaire de commentaire
+                            function toggleCommentForm() {
+                            const form = document.getElementById('commentForm');
+                            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                            }
+                        </script>
+
+                    }
+                </div><div class="col-lg-7">
+                    <div class="owl-carousel testimonial-carousel">
+                        @foreach (var commentaire in commentaires)
+                        {
+                            <div class="bg-white p-5">
+                                <i class="fa fa-3x fa-quote-left text-primary mb-4"></i>
+                                <p>@commentaire.ContenuCommentaire</p>
+                                <div class="d-flex flex-shrink-0 align-items-center mt-4">
+                                    <div>
+                                        <h5>@commentaire.User.FirstName @commentaire.User.LastName</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial end -->
+    <!-- News start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="section-title text-center position-relative mb-5">
+                <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">News</h6>
+                <h1 class="display-4">See What's New</h1>
+            </div>
+
+            <div class="owl-carousel testimonial-carousel position-relative" style="padding: 0 30px;">
+                @foreach (var actualite in actualites)
+                {
+                    <div class="team-item new-card">
+                        <div class="d-flex align-items-center bg-light p-4">
+                            <!-- Image Section -->
+                            <img src="/Actualites/GetImage/@actualite.IdActualite"
+                                 alt="@actualite.FileName"
+                                 style="width: 200px; height: auto; object-fit: cover; margin-right: 20px;"
+                                 class="img-fluid rounded">
+                            <!-- Text Section -->
+                            <div class="flex-grow-1">
+                                <h5 class="mb-3">@actualite.Titre</h5>
+                                <p class="mb-2">@actualite.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Start -->
+    <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <div class="bg-light d-flex flex-column justify-content-center px-5" style="height: 450px;">
+                        <div class="d-flex align-items-center mb-5">
+                            <div class="btn-icon bg-primary mr-4">
+                                <i class="fa fa-2x fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div class="mt-n1">
+                                <h4>Our Location</h4>
+                                <p class="m-0">PowerLearn B.P. 2202 – Route d’Imouzzer, Fez</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-5">
+                            <div class="btn-icon bg-secondary mr-4">
+                                <i class="fa fa-2x fa-phone-alt text-white"></i>
+                            </div>
+                            <div class="mt-n1">
+                                <h4>Call Us</h4>
+                                <p class="m-0">+212 5 22 34 56 78</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="btn-icon bg-warning mr-4">
+                                <i class="fa fa-2x fa-envelope text-white"></i>
+                            </div>
+                            <div class="mt-n1">
+                                <h4>Email Us</h4>
+                                <p class="m-0">PowerLearn@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="section-title position-relative mb-4">
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Need Help?</h6>
+                        <h1 class="display-4">Send Us A Message</h1>
+                    </div>
+                    <div class="contact-form">
+                        <form method="post" action="/Home/ContactFromHome">
+                            <div class="row">
+                                <div class="col-6 form-group">
+                                    <input type="text" name="name" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Name" required="required">
+                                </div>
+                                <div class="col-6 form-group">
+                                    <input type="email" name="email" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Email" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="subject" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Subject" required="required">
+                            </div>
+                            <div class="form-group">
+                                <textarea name="messageContent" class="form-control border-top-0 border-right-0 border-left-0 p-0" rows="5" placeholder="Message" required="required"></textarea>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary py-3 px-5" type="submit">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+</body>
+</html>

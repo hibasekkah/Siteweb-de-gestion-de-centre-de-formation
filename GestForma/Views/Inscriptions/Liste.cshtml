@@ -1,0 +1,201 @@
+﻿@model IEnumerable<GestForma.Models.Inscription>
+
+@{
+    var inscriptionsFini = ViewData["inscriptionsFini"] as List<GestForma.Models.Inscription>;
+    var inscriptionsNonPayes = ViewData["inscriptionsNonPayes"] as List<GestForma.Models.Inscription>;
+    var inscriptionsnonFini = ViewData["inscriptionsnonFini"] as List<GestForma.Models.Inscription>;
+  
+}
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="section-title text-center position-relative mb-5">
+            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">History</h6>
+        </div>
+        <div style="padding: 0 30px;">
+
+            <div class="container1">
+                <h2>History of Trainings Attended</h2>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+
+    <div class="table-responsive mx-auto px-4 mt-5">
+    <table class="table text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Title of the Course</th>
+                <th>Number of Hours</th>
+                <th>Cost of the Course</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (inscriptionsFini != null)
+            {
+                var ratings = ViewData["Ratings"] as Dictionary<int, int>; // Cast ViewData to a dictionary
+
+                foreach (var inscription in inscriptionsFini)
+                {
+                    <tr>
+                        <td>@inscription.Formation.Intitule</td>
+                        <td>@inscription.Formation.Duree</td>
+                        <td>@inscription.Formation.Cout</td>
+                        <td>
+                            @{
+                                int ratingValue = 0;
+                                if (ratings != null && ratings.ContainsKey(inscription.Formation.ID_Formation))
+                                {
+                                    ratingValue = ratings[inscription.Formation.ID_Formation];
+                                }
+                            }
+                            <div class="rating" data-formation-id="@inscription.Formation.ID_Formation" data-user-id="@User.Identity.Name">
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        setInitialRating(@ratingValue, document.querySelector('.rating[data-formation-id="@inscription.Formation.ID_Formation"]'));
+                                    });
+                                </script>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="star" data-value="@i">&#9733;</span>
+                                }
+                            </div>
+                            <form id="ratingForm" method="post" action="@Url.Action("SaveRating")">
+                                <input type="hidden" id="userId" name="UserId" />
+                                <input type="hidden" id="formationId" name="FormationId" />
+                                <input type="hidden" id="rateValue" name="RateValue" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+                <div style="padding: 0 30px;">
+
+            <div class="container1">
+                <h2>History of Incomplete Trainings</h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive mx-auto px-4 mt-5">
+    <table class="table  text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Title of the Course</th>
+                <th>Number of Hours</th>
+                <th>Cost of the Course</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (inscriptionsFini != null)
+            {
+                foreach (var inscription in inscriptionsnonFini)
+                {
+                    <tr>
+                        <td>@inscription.Formation.Intitule</td>
+                        <td>@inscription.Formation.Duree</td>
+                        <td>@inscription.Formation.Cout</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">All Courses are completed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+             <div style="padding: 0 30px;">
+
+            <div class="container1">
+                <h2>History of Unpaid Trainings</h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive mx-auto px-4 mt-5">
+    <table class="table text-center">
+
+    <thead class="table-primary">
+        <tr>
+           <th>Title of the Course</th>
+                    <th>Number of Hours</th>
+                    <th>Cost of the Course</th>
+        </tr>
+    </thead>
+    <tbody>
+            @if (inscriptionsFini != null)
+            {
+                foreach (var inscription in inscriptionsNonPayes)
+                {
+                        <tr>
+                             <td>@inscription.Formation.Intitule</td>
+                            <td>@inscription.Formation.Duree</td>
+                            <td>@inscription.Formation.Cout</td>
+                        </tr>
+                }
+            }
+    </tbody>
+     </table>
+</div>
+
+<script>
+      document.querySelectorAll('.star').forEach(function(star) {
+        star.addEventListener('click', function() {
+            var rating = this.getAttribute('data-value');
+            var formationId = this.closest('.rating').getAttribute('data-formation-id');
+            var userId = this.closest('.rating').getAttribute('data-user-id');
+
+            // Mise à jour des champs cachés dans le formulaire
+            document.getElementById('formationId').value = formationId;
+            document.getElementById('rateValue').value = rating;
+            document.getElementById('userId').value = userId;
+
+            // Soumettre le formulaire pour enregistrer la note
+            document.getElementById('ratingForm').submit();
+        });
+
+        // Optional: To handle hover effects
+        star.addEventListener('mouseover', function() {
+            var rating = this.getAttribute('data-value');
+            updateStars(rating, true);
+        });
+
+        star.addEventListener('mouseout', function() {
+            var rating = document.getElementById('rateValue').value;
+            updateStars(rating, false);
+        });
+    });
+
+
+            function setInitialRating(rating, container) {
+            updateStars(container, rating);
+        }
+
+        function updateStars(container, rating) {
+            container.querySelectorAll('.star').forEach(function (star) {
+                const value = star.getAttribute('data-value');
+                star.classList.toggle('selected', value <= rating);
+            });
+        }
+
+
+</script>

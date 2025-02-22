@@ -1,0 +1,79 @@
+﻿@model List<GestForma.Models.Inscription>
+@{
+    Layout = "~/Views/Shared/_LayoutFormateur.cshtml";
+}
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+    <div class="alert alert-success text-center">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+<h2 class="text-center text-dark fw-bold mt-5 mb-4">Participants who remain incomplete in their training</h2>
+<!-- Search Bar -->
+<div class="d-flex justify-content-center align-items-center">
+    <div class="mb-3 w-25">
+        <input type="text" id="searchEmail" class="form-control" placeholder="Search by Email" />
+    </div>
+</div>
+
+
+
+<div class="table-responsive mx-auto px-4 mt-5" style="margin-bottom:200px">
+    <table class="table table-bordered table-hover table-striped text-center" id="tableCertificats">
+        <thead>
+            <tr>
+                <th>Participant Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any()){
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.User != null ? item.User.FirstName + " " + item.User.LastName : "No Name Available")</td>
+                        <td class="email">@(item.User != null ? item.User.Email : "No Email Available")</td>
+                        <td>@(item.Formation != null ? item.Formation.Intitule : "No Course Name")</td>
+                        <td>@(item.Formation != null ? item.Formation.Categorie.Title : "No Category Title")</td>
+                        <td>
+                            <form method="post" action="@Url.Action("MarkAsComplete", "Home")">
+                                <input type="hidden" name="inscriptionId" value="@item.ID_Inscription" />
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="fa fa-check"></i> End of training
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No records found.</td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#searchEmail").on("keyup", function () {
+            var searchValue = $(this).val().toLowerCase();
+            $("#tableCertificats tbody tr").filter(function () {
+                $(this).toggle($(this).find(".email").text().toLowerCase().indexOf(searchValue) > -1);
+            });
+        });
+    });
+</script>

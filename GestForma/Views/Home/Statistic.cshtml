@@ -1,0 +1,188 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Statistic";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <div class="row">
+                <div class="card card1 mb-3">
+                    <div class="card-body">
+                        <div class="card2">
+
+                            <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                            <h5 class="card-title title1">Participants Number</h5>
+                        </div>
+                        <p class="card-text text1">@ViewBag.nbrPart</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+
+        <div class="col-auto">
+            <div class="card card1 mb-3">
+                <div class="card-body">
+                    <div class="card2">
+
+                        <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                        <h5 class="card-title title1">Guests Number</h5>
+                    </div>
+                    <p class="card-text text1">@ViewBag.nbrinv</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+
+            <div class="card card1 mb-3">
+                <div class="card-body">
+                    <div class="card2">
+
+                        <i class="fa-solid  fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                        <h5 class="card-title title1">Trainers Number</h5>
+                    </div>
+                    <p class="card-text text1">@ViewBag.nbrprof</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-auto">
+            <div class="card card1 mb-3">
+                <div class="card-body">
+                    <div class="card2">
+                        <i class="fa-solid fa-users" style="color: blue; font-size: 1.5rem;"></i>
+                        <h5 class="card-title title1">Actifs Trainers</h5>
+                    </div> 
+                    <p class="card-text text1">@ViewBag.nbrActif</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="card card1 mb-3">
+                <div class="card-body">
+                    <div class="card2">
+                        <i class="fa-brands fa-leanpub" style="color: blue; font-size: 1.5rem;"></i>
+
+                        <h5 class="card-title title1">Courses Number</h5>
+                    </div>
+                    <p class="card-text text1">@ViewBag.TotalNumberOfFormations</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Age Distribution of Participants</h2>
+
+            @if (Model.Any())
+            {
+                <canvas id="ageDistributionChart" style="max-width: 500px; max-height: 300px; margin: auto;"></canvas>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    var ctx = document.getElementById('ageDistributionChart').getContext('2d');
+                    var ageGroups = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+                    var labels = ageGroups.map(function(group) { return group.AgeGroup; });
+                    var data = ageGroups.map(function(group) { return group.Count; });
+
+                    var chart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Répartition par âge',
+                                data: data,
+                                backgroundColor: ['#0073FF', '#00C7FF', '#00FFE9', '#acdcee', '#f0fbff', '#05004e'],
+                                hoverBackgroundColor: ['#0073FF', '#00C7FF', '#00FFE9', '#acdcee', '#f0fbff', '#05004e']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // Permet de désactiver le ratio par défaut
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(tooltipItem) {
+                                            return tooltipItem.label + ': ' + tooltipItem.raw + ' utilisateurs';
+                                        }
+                                    }
+                                }
+                            },
+                            layout: {
+                                padding: {
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    bottom: 0
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    display: false
+                                },
+                                y: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                </script>
+            }
+           
+        </div>
+   
+
+
+
+
+        <div class="col-md-6">
+            <h2>Distribution of Certified Users</h2>
+            <canvas id="myPieChart" style="max-width: 500px; max-height: 300px; margin: auto;"></canvas>
+            </div>
+    </div>
+</div>
+
+
+    <script>
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+        labels: ['non-certified', 'certified'],
+                datasets: [{
+                    label: 'Nombre d\'utilisateurs',
+                data: [@ViewBag.nbrnonCertifies, @ViewBag.nbrCertifies],
+            backgroundColor: ['#FF4500', '#FF0000']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                       
+                    }
+                }
+            }
+        });
+    </script>

@@ -1,0 +1,25 @@
+﻿/* Ensure that the images have the same height and are responsive */
+.team-item img{
+    width: 100%;
+    height: 350px; /* Set a fixed height for the images */
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+}
+.new-card{
+    height:400px;
+}
+/* For smaller screens, adjust the image height */
+@media (max-width: 768px) {
+    .team-item img{
+        height: 300px; /* Smaller height for smaller screens */
+    }
+    .courses-list-item img, .courses-item img {
+        height: 230px;
+    }
+  
+}
+
+.courses-list-item img, .courses-item img {
+    width: 100%;
+    height: 400px; /* Set a fixed height for the images */
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+}

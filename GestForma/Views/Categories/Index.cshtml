@@ -1,0 +1,93 @@
+﻿@model IEnumerable<GestForma.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h2 class="text-center text-dark fw-bold mt-5 mb-4">Categories</h2>
+<div class="row">
+    <div class="col-md-2">
+       
+            <form asp-action="Create" method="get" class="d-inline">
+                <button type="submit" class="btn btn-info btn-sm ml-xl-4 mx-xl-4 ml-4">
+                    <i class="fa fa-clone"></i> Create New Category
+                </button>
+            </form>
+       
+    </div>
+    <div class="col-md-8">
+        <!-- Search Bar -->
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="mb-2 w-50">
+                <input type="text" id="search" class="form-control" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="table-responsive mx-auto px-4 mt-5">
+    <table class="table table-bordered  table-hover table-striped text-center" id="tableCategories">
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+             @if (Model != null && Model.Any()){
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="element">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            <form asp-action="Edit" asp-route-id="@item.Id" method="get" class="d-inline">
+                                <button type="submit" class="btn btn-info btn-sm">
+                                    <i class="fa fa-edit"></i> Edit
+                                </button>
+                            </form>
+
+                            @* <form asp-action="Details" asp-route-id="@item.Id" method="get" class="d-inline"> *@
+                            @*     <button type="submit" class="btn btn-dark btn-sm"> *@
+                            @*         <i class="fa fa-info-circle"></i> Details *@
+                            @*     </button> *@
+                            @* </form> *@
+
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="get"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                }
+             }
+            else
+            {
+                <tr>
+                    <td colspan="2">No records found.</td>
+                </tr>
+            }
+           
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#search").on("keyup", function () {
+            var searchValue = $(this).val().toLowerCase();
+            $("#tableCategories tbody tr").filter(function () {
+                $(this).toggle($(this).find(".element").text().toLowerCase().indexOf(searchValue) > -1);
+            });
+        });
+    });
+</script>
+
